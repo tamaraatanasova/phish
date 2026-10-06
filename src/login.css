@@ -1,0 +1,21 @@
+/* Spacing for the two-field admin login form. */
+.access-card form label { margin: 16px 0 8px; }
+.access-card form label:first-child { margin-top: 0; }
+
+.users-table-wrap {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--paper);
+}
+
+.users-table { width: 100%; border-collapse: collapse; text-align: left; }
+.users-table th { padding: 14px 20px; background: #faf9ff; color: var(--muted); font-size: 11px; letter-spacing: .8px; text-transform: uppercase; }
+.users-table td { padding: 17px 20px; border-top: 1px solid var(--line); color: var(--ink); font-size: 14px; }
+.status { display: inline-block; padding: 5px 9px; border-radius: 999px; background: var(--green); color: #347654; font-size: 12px; font-weight: 700; }
+.empty-row { color: var(--muted) !important; text-align: center; }
+
+@media (max-width: 600px) {
+  .users-table th, .users-table td { padding: 13px 12px; font-size: 12px; }
+  .users-table th { font-size: 9px; }
+}
