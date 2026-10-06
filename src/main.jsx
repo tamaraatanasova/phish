@@ -32,20 +32,26 @@ function AccessForm({ onEnter }) {
       setLoading(false);
     }
   }
-  return <main className="access-page"><section className="access-card" aria-labelledby="access-title">
-    <p className="eyebrow">Платформа за обуки</p><h1 id="access-title">Добредојде</h1>
-    <form onSubmit={submit} noValidate><label htmlFor="email">Е-пошта</label><input id="email" name="email" type="email" autoComplete="email" placeholder="admin@admin.com" required /><label htmlFor="password">Лозинка</label><input id="password" name="password" type="password" autoComplete="current-password" placeholder="Најмалку 8 знаци" minLength="8" required /><button className="primary" type="submit" disabled={loading}>{loading ? 'Се најавуваш...' : <>Најави се <span>→</span></>}</button></form>
+  return <main className="access-page"><section className="access-card" aria-label="Платформа за обуки">
+    <img className="login-image" src="/slika1.png" alt="Платформа за обуки" />
+    <form onSubmit={submit} noValidate><label htmlFor="email">Е-пошта</label><input id="email" name="email" type="email" autoComplete="email" placeholder="Внеси е-пошта овде" required /><label htmlFor="password">Лозинка</label><input id="password" name="password" type="password" autoComplete="current-password" placeholder="Внеси лозинка овде" minLength="8" required /><button className="primary" type="submit" disabled={loading}>{loading ? 'Се најавуваш...' : <>Најави се <span>→</span></>}</button></form>
     {error && <p className="message" role="alert">{error}</p>}
   </section></main>;
 }
 
-function TrainingCard({ training }) {
-  return <article className="training-card"><div className={`training-number ${training.tone}`}>{training.number}</div><div><p className="card-label">Тематска единица</p><h3>{training.title}</h3><p className="card-copy">{training.detail}</p></div><button type="button" className="open-training">Отвори <span>→</span></button></article>;
+function TrainingCard({ training, onOpen }) {
+  return <article className="training-card"><div className={`training-number ${training.tone}`}>{training.number}</div><div><p className="card-label">Тематска единица</p><h3>{training.title}</h3><p className="card-copy">{training.detail}</p></div><button type="button" className="open-training" onClick={onOpen}>Отвори <span>→</span></button></article>;
+}
+
+function EmptyTraining({ training, onBack }) {
+  return <main className="dashboard-page"><nav className="topbar"><a className="brand" href="/">Обуки</a><button type="button" className="text-button" onClick={onBack}>← Назад до обуките</button></nav><section className="empty-training"><div className="empty-training-card"><p className="eyebrow">{training.number} · Тематска единица</p><h1>{training.title}</h1><p>Сѐ уште нема поставено материјали. Обиди се подоцна.</p><button type="button" className="primary empty-training-button" onClick={onBack}>Назад до обуките</button></div></section></main>;
 }
 
 function Dashboard({ email, onExit }) {
   const firstName = email.split('@')[0].split(/[._-]/)[0];
-  return <main className="dashboard-page"><nav className="topbar"><a className="brand" href="/">Обуки</a><button className="text-button" onClick={onExit}>Одјави се</button></nav><section className="dashboard-content"><div className="dashboard-intro"><div><p className="eyebrow">Тематски единици</p><h1>Здраво, {firstName}.</h1><p>Избери тематска единица и продолжи со обуката.</p></div><div className="group-badge"><span>4</span> обуки</div></div><div className="trainings-grid">{trainings.map(training => <TrainingCard key={training.number} training={training} />)}</div></section></main>;
+  const [selectedTraining, setSelectedTraining] = React.useState(null);
+  if (selectedTraining) return <EmptyTraining training={selectedTraining} onBack={() => setSelectedTraining(null)} />;
+  return <main className="dashboard-page"><nav className="topbar"><a className="brand" href="/">Обуки</a><button className="text-button" onClick={onExit}>Одјави се</button></nav><section className="dashboard-content"><div className="dashboard-intro"><div><p className="eyebrow">Тематски единици</p><h1>Здраво, {firstName}.</h1><p>Избери тематска единица и продолжи со обуката.</p></div><div className="group-badge"><span>4</span> обуки</div></div><div className="trainings-grid">{trainings.map(training => <TrainingCard key={training.number} training={training} onOpen={() => setSelectedTraining(training)} />)}</div></section></main>;
 }
 
 function AdminPanel({ onExit }) {

@@ -2,6 +2,14 @@
 .access-card form label { margin: 16px 0 8px; }
 .access-card form label:first-child { margin-top: 0; }
 
+.login-image {
+  display: block;
+  width: min(100%, 280px);
+  max-height: 150px;
+  margin: 16px auto 24px;
+  object-fit: contain;
+}
+
 .users-table-wrap {
   overflow: hidden;
   border: 1px solid var(--line);
