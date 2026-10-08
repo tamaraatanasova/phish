@@ -14,6 +14,7 @@ const trainings = [
 function AccessForm({ onEnter }) {
   const [error, setError] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+
   async function submit(event) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -22,7 +23,12 @@ function AccessForm({ onEnter }) {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('/api/access', { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ email, password }) });
+      const response = await fetch('/api/access', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email, password })
+      });
       const result = await response.json();
       if (!response.ok) return setError(result.error || 'Неуспешна најава.');
       onEnter(result.user);
@@ -32,11 +38,65 @@ function AccessForm({ onEnter }) {
       setLoading(false);
     }
   }
-  return <main className="access-page"><section className="access-card" aria-label="Платформа за обуки">
-    <img className="login-image" src="/slika1.png" alt="Платформа за обуки" />
-    <form onSubmit={submit} noValidate><label htmlFor="email">Е-пошта</label><input id="email" name="email" type="email" autoComplete="email" placeholder="Внеси е-пошта овде" required /><label htmlFor="password">Лозинка</label><input id="password" name="password" type="password" autoComplete="current-password" placeholder="Внеси лозинка овде" minLength="8" required /><button className="primary" type="submit" disabled={loading}>{loading ? 'Се најавуваш...' : <>Најави се <span>→</span></>}</button></form>
-    {error && <p className="message" role="alert">{error}</p>}
-  </section></main>;
+
+  return (
+    <main className="access-page">
+      <section className="access-card" aria-label="Платформа за обуки">
+        <div className="logos">
+          <img
+            src="./public/logo.png"  
+            alt="ANB"
+            className="anb-logo"
+          />
+          <img
+            src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png"
+            alt="Google"
+            className="google-logo"
+          />
+        </div>
+
+        <h1 className="title">Најави се</h1>
+        <p className="subtitle">за да продолжиш кон Платформата за обуки</p>
+
+        <form onSubmit={submit} noValidate>
+          <div className="input-group">
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              placeholder=" "
+              required
+            />
+            <label htmlFor="email">Е-пошта</label>
+          </div>
+
+          <div className="input-group">
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              placeholder=" "
+              minLength={8}
+              required
+            />
+            <label htmlFor="password">Лозинка</label>
+          </div>
+
+          <button className="primary" type="submit" disabled={loading}>
+            {loading ? 'Се најавуваш...' : 'Најави се'}
+          </button>
+        </form>
+
+        {error && (
+          <p className="message" role="alert">
+            {error}
+          </p>
+        )}
+      </section>
+    </main>
+  );
 }
 
 function TrainingCard({ training, onOpen }) {
